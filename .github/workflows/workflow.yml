@@ -1,0 +1,43 @@
+name: deploy resource group and storage account
+
+on: 
+  push:
+    branches: 
+      - main
+      - 'features/**'
+    paths: 
+    - 'deploy/**.bicep'
+
+  workflow_dispatch:
+    branches:
+      - main
+      - 'features/**'
+    paths: 
+    - 'deploy/**.bicep'
+
+jobs:
+  
+  # Calls lint workflow to lint the Bicep file
+  lint: 
+
+    uses: seasandseasons/Workflows/.github/workflows/lint.yml@de2217471466d550c7c3e1cb726cbb10119d01ea
+
+  # Calls deploy workflow to deploy to the test environment
+  deploy-test:
+    uses: ./.github/workflows/deploy.yml
+    needs: lint
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  # Calls deploy workflow to deploy to the production environment
+  #deploy-production:
+   # uses: ./.github/workflows/deploy.yml
+    #needs: deploy-test
+    #with:
+     # environmentType: Production
+    #secrets:
+     # AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID_PRODUCTION }}
+      #AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      #AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
