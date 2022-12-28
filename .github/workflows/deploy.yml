@@ -37,9 +37,8 @@ jobs:
       - uses: azure/arm-deploy@v1
         name: Run preflight validation
         with:
-          scope: resourcegroup
+          scope: subscription
           region: eastus2
-          resourceGroupName: ${{ inputs.resourceGroupName }}
           deploymentName: ${{ github.run_number }}
           template: ./deploy/main.bicep
           parameters: ./deploy/main.parameters.json
@@ -65,9 +64,8 @@ jobs:
       - uses: azure/arm-deploy@v1
         name: Run what-if
         with:
-          scope: managementgroup
+          scope: subscription
           region: eastus2
-          resourceGroupName: ${{ inputs.resourceGroupName }}
           failOnStdErr: false
           template: ./deploy/main.bicep
           parameters: ./deploy/main.parameters.json
