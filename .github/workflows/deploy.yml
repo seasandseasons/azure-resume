@@ -2,10 +2,6 @@ name: deploy
 
 on: 
   workflow_call:
-    inputs:
-      resourceGroupName:
-        required: true
-        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
