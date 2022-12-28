@@ -7,6 +7,9 @@
     },
     "skuName": {
       "value": "Standard_LRS"
+    },
+    "location": {
+      "value": "eastus2"
     }
   }
 }
