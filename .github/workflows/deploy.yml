@@ -69,7 +69,7 @@ jobs:
 
   copyFiles:
     runs-on: ubuntu-latest
-    needs: validate
+    needs: preview
     steps:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
