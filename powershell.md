@@ -19,8 +19,6 @@ $ctx = $storageAccount.Context
 New-AzResourceGroupDeployment  -location eastus2 -ResourceGroupName '' -TemplateFile deploy/main.bicep -TemplateParameterFile deploy/main.parameters.json -WhatIf
 
 # Create Azure Storage Static Website 
-Update-AzStorageBlobServiceProperty -ResourceGroupName '' -AccountName '' -StaticWebsite -ErrorDocument404Path "404.html" -IndexDocument "index.html"
-
 Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument 'index.html' -ErrorDocument404Path '404.html'
 
 # Authenticate GitHub workflow with Azure AD
@@ -39,8 +37,16 @@ Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument 'index.html' -ErrorDo
         $objectId = (Get-AzADServicePrincipal -DisplayName azure-resume).Id
         New-AzRoleAssignment -ObjectId $objectId -RoleDefinitionName Contributor -ResourceGroupName $resourceGroupName
 
+or assign at subscription level
+
+        New-AzRoleAssignment -ObjectId $objectId -RoleDefinitionName Contributor
+
 4. Get the values for clientId, subscriptionId, and tenantId to use later in your GitHub Actions workflow.
 
         $clientId = (Get-AzADApplication -DisplayName azure-resume).AppId
         $subscriptionId = (Get-AzContext).Subscription.Id
         $tenantId = (Get-AzContext).Subscription.TenantId
+
+5. Add federated credentials.
+        
+        Invoke-AzRestMethod -Method POST -Uri 'https://graph.microsoft.com/beta/applications/<APPLICATION-OBJECT-ID>/federatedIdentityCredentials' -Payload  '{"name":"<CREDENTIAL-NAME>","issuer":"https://token.actions.githubusercontent.com","subject":"repo:organization/repository:environment:Production","description":"Testing","audiences":["api://AzureADTokenExchange"]}'
