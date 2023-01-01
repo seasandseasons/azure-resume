@@ -88,4 +88,17 @@ jobs:
         name: Copy files to container
         with:
           inlineScript: |
-            az storage blob upload-batch --account-name ashearinazureresume -d '$web' -s frontend/
+            # Set the resource group name and storage account name
+            RESOURCE_GROUP_NAME="rg-azureResume"
+            STORAGE_ACCOUNT_NAME="ashearinresumeproject"
+
+            # Get the storage account and store it in a variable
+            STORAGE_ACCOUNT=$(az storage account show --name $STORAGE_ACCOUNT_NAME --resource-group $RESOURCE_GROUP_NAME --output tsv)
+
+            # Extract the storage account context from the storage account variable
+            STORAGE_ACCOUNT_CONTEXT=$(echo $STORAGE_ACCOUNT | jq -r '.secondaryEndpoints.blob'
+
+            # Enable static website hosting and set the index document and error document
+            az storage blob service-properties update --account-name $STORAGE_ACCOUNT_NAME --static-website --404-document 404.html --index-document index.html --context $STORAGE_ACCOUNT_CONTEXT
+
+            az storage blob upload-batch --account-name $STORAGE_ACCOUNT_NAME -d '$web' -s frontend/
