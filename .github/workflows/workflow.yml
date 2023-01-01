@@ -20,7 +20,7 @@ jobs:
   # Calls lint workflow to lint the Bicep file
   lint: 
 
-    uses: seasandseasons/Workflows/.github/workflows/lint.yml@de2217471466d550c7c3e1cb726cbb10119d01ea
+    uses: seasandseasons/Workflows/.github/workflows/lint.yml@ce5d29ee397122e26b702326380658e8786df351
 
   # Calls deploy workflow to deploy to the test environment
   deploy-test:
