@@ -10,4 +10,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   sku: {
     name: skuName
   }
+  properties: {
+    allowBlobPublicAccess: false
+  }
 }
