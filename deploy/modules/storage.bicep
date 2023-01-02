@@ -32,4 +32,7 @@ resource runAzureCLIInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
     cleanupPreference: 'OnSuccess'
     retentionInterval: 'PT10M'
   }
+  dependsOn: [
+    storageAccount
+  ]
 }
