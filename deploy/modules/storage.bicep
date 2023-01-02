@@ -22,7 +22,7 @@ resource runAzureCLIInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
   kind: 'AzureCLI'
   properties: {
     forceUpdateTag: utcValue
-    azCliVersion: '2.43.0'
+    azCliVersion: '2.42.0'
     timeout: 'PT10M'
     arguments: ''
     scriptContent: '''
