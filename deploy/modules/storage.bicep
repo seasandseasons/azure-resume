@@ -30,7 +30,7 @@ resource runAzureCLIInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
       az storage blob upload-batch --account-name ashearinresumeproject -d '$web' -s frontend/
       '''
     cleanupPreference: 'OnSuccess'
-    retentionInterval: 'PT10M'
+    retentionInterval: 'PT1H'
   }
   dependsOn: [
     storageAccount
