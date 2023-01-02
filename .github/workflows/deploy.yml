@@ -67,7 +67,7 @@ jobs:
           parameters: ./deploy/main.parameters.json
           # additionalArguments: --what-if
 
-  copyFiles:
+  buildStaticWebsite:
     runs-on: ubuntu-latest
     needs: preview
     steps:
@@ -83,10 +83,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Runs Azure CLI to copy files to container    
+      # Runs Azure CLI to enable static website and copy files to container    
       - uses: azure/CLI@v1
         name: Copy files to container
         with:
           inlineScript: |
             az storage blob service-properties update --account-name ashearinresumeproject --static-website true --404-document 404.html --index-document index.html
             az storage blob upload-batch --account-name ashearinresumeproject -d '$web' -s frontend/
+            az storage container set-permission --name '$web' --public-access blob
