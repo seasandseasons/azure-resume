@@ -41,7 +41,7 @@ resource runAzureCLIInline 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userAssignedIdentityName}': {}
+      '${userAssignedIdentity.id}': {}
     }
   }
   properties: {
