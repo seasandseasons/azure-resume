@@ -139,4 +139,4 @@ jobs:
         name: Enable HTTPS
         with:
           inlineScript: |
-            az cdn custom-domain enable-https -g rg-azureResume --profile-name ashearinresumecdn --endpoint-name ashearinresume -n www.andrewshearin.com --min-tls-version 1.2
+            az cdn custom-domain enable-https -g rg-azureResume --profile-name ashearinresumecdn --endpoint-name ashearinresume -n customDomain --min-tls-version 1.2
