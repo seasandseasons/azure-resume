@@ -90,3 +90,30 @@ jobs:
           inlineScript: |
             az storage blob service-properties update --account-name ashearinresumeproject --static-website true --404-document 404.html --index-document index.html
             az storage blob upload-batch --account-name ashearinresumeproject -d '$web' -s frontend/
+
+  createCDN:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      # Logs into Azure
+      - uses: azure/login@v1
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Uses ARM preflight validation to check for problems
+      - uses: azure/arm-deploy@v1
+        name: Run what-if
+        with:
+          scope: subscription
+          region: eastus2
+          failOnStdErr: false
+          template: ./deploy/modules/cdn.bicep
+          parameters: ./deploy/modules/cdn.parameters.json
+          # additionalArguments: --what-if
