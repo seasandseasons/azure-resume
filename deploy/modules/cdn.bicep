@@ -96,7 +96,7 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' = {
 
 resource zone 'Microsoft.Network/dnsZones@2018-05-01' = {
   name: 'andrewshearin.com'
-  location: location
+  location: 'global'
 
   resource cnameRecord 'CNAME@2018-05-01' = {
     name: 'www'
