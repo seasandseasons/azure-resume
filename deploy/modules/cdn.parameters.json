@@ -13,6 +13,9 @@
     },
     "defaultHostname": {
       "value": "ashearinresume.azureedge.net"
+    },
+    "customDomainHostName": {
+      "value": "www.andrewshearin.com"
     }
   }
 }
