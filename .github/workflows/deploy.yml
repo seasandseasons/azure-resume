@@ -111,7 +111,7 @@ jobs:
       - uses: azure/arm-deploy@v1
         name: Run what-if
         with:
-          scope: subscription
+          resourceGroupName: rg-azureResume
           region: eastus2
           failOnStdErr: false
           template: ./deploy/modules/cdn.bicep
