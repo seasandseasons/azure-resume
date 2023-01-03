@@ -10,6 +10,9 @@
     },
     "originUrl": {
       "value": "ashearinresumeproject.z20.web.core.windows.net"
+    },
+    "defaultHostname": {
+      "value": "ashearinresume.azureedge.net"
     }
   }
 }
