@@ -13,6 +13,10 @@ on:
     paths:
       - 'frontend/**'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   updateFiles:
     runs-on: ubuntu-latest
