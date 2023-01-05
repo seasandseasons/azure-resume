@@ -1,1 +1,2 @@
-# azure-resume
+# Azure Resume Project
+This is a complete IaC project. It includes actions to create an Azure Resource Group, Storage Account, enable a Static Website, upload the frontend content to the $web container, create a CDN profile and endpoint, custom domain and enable HTTPS on the custom domain. It also contains an action to update the content if files are added or modified in frontend.
