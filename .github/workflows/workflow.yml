@@ -1,10 +1,6 @@
 name: deploy resource group and storage account
 
 on: 
-  push:
-    branches: 
-      - main
-
   workflow_dispatch:
     branches:
       - main
