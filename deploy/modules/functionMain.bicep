@@ -104,13 +104,13 @@ module functionApp '../modules/functionApp.bicep' = {
   }
 }
 
-module function '../modules/functionCounter.bicep' = {
-  name: 'deployFunction'
-  dependsOn: [
-    functionApp
-  ]
-  params: {
-    AzureResumeConnectionString: kv.getSecret('cosmos-counter-PrimaryConnectionString')
-    fncAppName: functionAppName
-  }
-}
+// module function '../modules/functionCounter.bicep' = {
+//   name: 'deployFunction'
+//   dependsOn: [
+//     functionApp
+//   ]
+//   params: {
+//     AzureResumeConnectionString: kv.getSecret('cosmos-counter-PrimaryConnectionString')
+//     fncAppName: functionAppName
+//   }
+// }
