@@ -1,6 +1,7 @@
 param location string
 param cosmosName string
 param cosmosDbName string
+param keyvaultName string
 
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
   name: cosmosName
@@ -45,5 +46,14 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
         ]
       }
     }
+  }
+}
+
+module cosmosKeyVaultSecretPrimaryConnectionString '../modules/KeyVaultSecret.bicep' = {
+  name: 'cosmosKeyVaultSecretPrimaryConnectionString'
+  params: {
+    keyvaultName: keyvaultName
+    secretName: '${cosmosAccount.name}-PrimaryConnectionString'
+    secretValue: listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', cosmosAccount.name), '2020-04-01').connectionStrings[0].connectionString
   }
 }

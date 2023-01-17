@@ -1,0 +1,38 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "req",
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": [
+        "get",
+        "post"
+      ],
+      "route": "counter/list"
+    },
+    {
+      "name": "$return",
+      "type": "http",
+      "direction": "out"
+    },
+    {
+      "name": "doc",
+      "type": "cosmosDB",
+      "databaseName": "azure-resume",
+      "collectionName": "counter",
+      "connectionStringSetting": "AzureResumeConnectionString",
+      "direction": "in",
+      "sqlQuery": "SELECT * from c"
+    },
+    {
+      "name": "out",
+      "type": "cosmosDB",
+      "databaseName": "azure-resume",
+      "collectionName": "counter",
+      "connectionStringSetting": "AzureResumeConnectionString",
+      "direction": "out"
+    }
+  ]
+}

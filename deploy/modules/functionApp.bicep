@@ -1,53 +1,29 @@
-@description('The name of the function app that you wish to create.')
-param appName string = 'fnapp-resume-${uniqueString(resourceGroup().id)}'
+param fncAppName string
+param location string
 
-@description('Location for all resources.')
-param location string = resourceGroup().location
+@secure()
+param hostingPlanId string
 
-@description('The language worker runtime to load in the function app.')
-@allowed([
-  'node'
-  'dotnet'
-  'java'
-  'python'
-])
-param runtime string = 'python'
-param linuxFxVersion string
 param storageAccountName string
+param fncWorkerRuntime string
+param linuxFxVersion string
 
-var functionAppName = appName
-var hostingPlanName = appName
-var functionWorkerRuntime = runtime
-
-resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: hostingPlanName
-  location: location
-  kind: 'linux'
-  sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
-  }
-  properties: {
-    reserved: true
-    maximumElasticWorkerCount: 1
-    targetWorkerCount: 0
-    targetWorkerSizeId: 0
-  }
-}
+@secure()
+param AzureResumeConnectionString string
 
 resource stg 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
   name: storageAccountName
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: functionAppName
+  name: fncAppName
   location: location
   kind: 'functionapp,linux'
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: hostingPlan.id
+    serverFarmId: hostingPlanId
     siteConfig: {
       appSettings: [
         {
@@ -60,7 +36,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(functionAppName)
+          value: toLower(fncAppName)
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -68,12 +44,16 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: functionWorkerRuntime
+          value: fncWorkerRuntime
+        }
+        {
+          name: 'AzureResumeConnectionString'
+          value: AzureResumeConnectionString
         }
       ]
       cors: {
         allowedOrigins: [
-            'https://portal.azure.com'
+            '*'
         ]
       }
       ftpsState: 'FtpsOnly'

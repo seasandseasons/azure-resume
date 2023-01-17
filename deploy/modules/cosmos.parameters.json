@@ -10,6 +10,9 @@
     },
     "cosmosDbName": {
       "value": "azure-resume"
+    },
+    "keyvaultName": {
+      "value": "kv-azureresume01"
     }
   }
 }
