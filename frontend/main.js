@@ -10,7 +10,7 @@ const getVisitCount = async () => {
         const response = await fetch(functionApi);
         const jsonResponse = await response.json();
         console.log("Website called function API.");
-        count = jsonResponse.counter;
+        count = jsonResponse[0].counter;
         document.getElementById('counter').innerText = count;
     } catch (error) {
         console.log(error);
