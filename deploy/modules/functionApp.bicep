@@ -26,10 +26,10 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     serverFarmId: hostingPlanId
     siteConfig: {
       appSettings: [
-        {
-          name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: 'https://ashearinresumeproject.blob.core.windows.net/functions/functionCounter.zip'
-        }
+        // {
+        //   name: 'WEBSITE_RUN_FROM_PACKAGE'
+        //   value: 'https://ashearinresumeproject.blob.core.windows.net/functions/functionCounter.zip'
+        // }
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${stg.listKeys().keys[0].value}'
@@ -53,6 +53,14 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'AzureResumeConnectionString'
           value: AzureResumeConnectionString
+        }
+        {
+          name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
+          value: 'true'
+        }
+        {
+          name: 'ENABLE_ORYX_BUILD'
+          value: 'true'
         }
       ]
       cors: {
