@@ -12,3 +12,9 @@ STORAGE_ACCOUNT_CONTEXT=$(echo $STORAGE_ACCOUNT | jq -r '.secondaryEndpoints.blo
 az storage blob service-properties update --account-name $STORAGE_ACCOUNT_NAME --static-website --404-document 404.html --index-document index.html --context $STORAGE_ACCOUNT_CONTEXT
 
 az storage blob upload-batch --account-name $STORAGE_ACCOUNT_NAME -d '$web' -s frontend/
+
+# Upload function zip to function app
+az functionapp deployment source config-zip -g rg-azureResume -n fnapp-resume-m4hlhzfsttuqg --src "./backend/api/function.zip"
+
+# Deploy function bicep
+az deployment group create --resource-group rg-azureResume --template-file ./deploy/modules/functionMain.bicep --parameters ./deploy/modules/functionMain.parameters.json

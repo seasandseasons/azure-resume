@@ -89,24 +89,6 @@
             ]
           },
           "applicationId": null
-        },
-        {
-          "objectId": "12687e4c-7ffe-4ab5-af4c-aaca9e214bf0",
-          "tenantId": "2373466a-a251-4a33-8eb7-b6ef9871f0ee",
-          "permissions": {
-            "certificates": [],
-            "keys": [],
-            "secrets": [
-              "Get",
-              "List",
-              "Set",
-              "Delete",
-              "Recover",
-              "Backup",
-              "Restore"
-            ]
-          },
-          "applicationId": null
         }
       ]
     },

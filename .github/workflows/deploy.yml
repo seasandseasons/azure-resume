@@ -140,3 +140,62 @@ jobs:
         with:
           inlineScript: |
             az cdn custom-domain enable-https -g rg-azureResume --profile-name ashearinresumecdn --endpoint-name ashearinresume -n customDomain --min-tls-version 1.2
+
+  buildCosmosDb:
+    runs-on: ubuntu-latest
+    needs: enable-https
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      # Logs into Azure
+      - uses: azure/login@v1
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Deploys Cosmos Db
+      - uses: azure/arm-deploy@v1
+        name: Run Cosmos Db deployment
+        with:
+          resourceGroupName: rg-azureResume
+          region: eastus2
+          failOnStdErr: false
+          template: ./deploy/modules/cosmos.bicep
+          parameters: ./deploy/modules/cosmos.parameters.json
+
+  buildFunction:
+    runs-on: ubuntu-latest
+    needs: buildCosmosDb
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      # Logs into Azure
+      - uses: azure/login@v1
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Deploys Cosmos Db
+      - uses: azure/arm-deploy@v1
+        name: Run Function deployment
+        with:
+          resourceGroupName: rg-azureResume
+          region: eastus2
+          failOnStdErr: false
+          template: ./deploy/modules/functionMain.bicep
+          parameters: ./deploy/modules/functionMain.parameters.json
+
+      # Runs Azure CLI to enable static website and copy files to container    
+      - uses: azure/CLI@v1
+        name: Deploy function files to function app
+        with:
+          inlineScript: |
+            az functionapp deployment source config-zip -g rg-azureResume -n fnapp-resume-m4hlhzfsttuqg --src "./backend/api/function.zip"
