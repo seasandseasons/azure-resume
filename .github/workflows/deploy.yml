@@ -1,4 +1,4 @@
-name: deploy
+name: build project
 
 on: 
   workflow_call:
@@ -183,7 +183,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Deploys Cosmos Db
+      # Deploys Function App
       - uses: azure/arm-deploy@v1
         name: Run Function deployment
         with:
@@ -193,7 +193,7 @@ jobs:
           template: ./deploy/modules/functionMain.bicep
           parameters: ./deploy/modules/functionMain.parameters.json
 
-      # Runs Azure CLI to enable static website and copy files to container    
+      # Runs Azure CLI to deploy function zip   
       - uses: azure/CLI@v1
         name: Deploy function files to function app
         with:
